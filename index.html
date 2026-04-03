@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pesquisa de Discovery · Plataforma de Relatórios · Loginfo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --blue:      #1642F6;
+    --blue-dark: #0E30D4;
+    --blue-mid:  #2452FF;
+    --violet:    #7B61FF;
+    --blue-pale: #EEF1FF;
+    --blue-soft: #D6DCFF;
+    --cream:     #F7F8FC;
+    --white:     #FFFFFF;
+    --gray-100:  #F0F2F8;
+    --gray-200:  #DDE1EF;
+    --gray-400:  #8E96B8;
+    --gray-600:  #4E5880;
+    --gray-800:  #1A1F3A;
+    --success:   #1A7F5A;
+    --error:     #C0392B;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Nunito', sans-serif; font-size: 15px;
+    background: var(--cream);
+    color: var(--gray-800);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--blue);
+    padding: 0;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner {
+    max-width: 860px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+
+  .logo-text { font-size: 13px; font-weight: 500; color: var(--blue-soft); letter-spacing: 0.04em; }
+  .progress-bar-wrap { display: flex; align-items: center; gap: 10px; }
+  .progress-label { font-size: 11px; color: rgba(255,255,255,0.6); }
+  .progress-track {
+    width: 140px; height: 3px; background: #3D5AFE;
+    border-radius: 99px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: white;
+    border-radius: 99px; transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0E30D4 0%, var(--blue) 45%, var(--violet) 100%);
+    padding: 60px 24px 52px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(123,97,255,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--blue-soft); border: 1px solid rgba(255,255,255,0.3);
+    padding: 5px 14px; border-radius: 99px; margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Nunito', sans-serif; font-weight: 700;
+    font-size: clamp(26px, 4vw, 38px);
+    color: var(--white); line-height: 1.2; margin-bottom: 16px;
+    font-weight: 400;
+  }
+  .hero h1 em { font-style: normal; color: rgba(255,255,255,0.85); }
+  .hero p {
+    font-size: 15px; color: rgba(255,255,255,0.65);
+    max-width: 540px; margin: 0 auto 28px; line-height: 1.75;
+  }
+  .hero-meta {
+    display: flex; align-items: center; justify-content: center; gap: 20px;
+    font-size: 12px; color: rgba(255,255,255,0.45); flex-wrap: wrap;
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 5px; }
+  .dot { width: 5px; height: 5px; background: rgba(255,255,255,0.6); border-radius: 50%; display: inline-block; }
+
+  /* ── MAIN LAYOUT ── */
+  .main { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ── SECTION CARD ── */
+  .section-card {
+    background: var(--white);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--gray-200);
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .section-card:focus-within { box-shadow: 0 4px 28px rgba(22,66,246,0.14); }
+
+  .section-head {
+    background: linear-gradient(90deg, var(--blue) 0%, var(--violet) 100%);
+    padding: 18px 28px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-num {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: white; flex-shrink: 0;
+  }
+  .section-info h2 {
+    font-family: 'Nunito', sans-serif; font-weight: 700;
+    font-size: 17px; color: var(--white); font-weight: 400;
+  }
+  .section-info p { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+  .section-body { padding: 28px; }
+
+  /* ── QUESTION ── */
+  .question { margin-bottom: 28px; }
+  .question:last-child { margin-bottom: 0; }
+
+  .q-label {
+    font-size: 14px; font-weight: 500; color: var(--gray-800);
+    margin-bottom: 4px; display: block; line-height: 1.5;
+  }
+  .q-hint { font-size: 12px; color: var(--gray-400); margin-bottom: 10px; }
+
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  select {
+    width: 100%;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    color: var(--gray-800);
+    background: var(--gray-100);
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    padding: 11px 14px;
+    transition: border-color 0.15s, background 0.15s;
+    outline: none;
+  }
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--blue);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(22,66,246,0.12);
+  }
+  textarea { resize: vertical; min-height: 88px; line-height: 1.65; }
+
+  /* ── OPTIONS GRID ── */
+  .opts-grid { display: grid; gap: 8px; }
+  .opts-grid.col-2 { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  .opts-grid.col-3 { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+
+  .opt-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 11px 14px;
+    background: var(--gray-100); border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md);
+    cursor: pointer; transition: all 0.15s;
+    font-size: 13px; color: var(--gray-800); line-height: 1.4;
+    user-select: none;
+  }
+  .opt-item:hover { border-color: var(--blue); background: var(--blue-pale); }
+  .opt-item.selected {
+    border-color: var(--blue); background: var(--blue-pale);
+    color: var(--gray-800);
+  }
+  .opt-item input { display: none; }
+  .opt-check {
+    width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px;
+    border: 2px solid var(--gray-400); border-radius: 4px;
+    background: var(--white); transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .opt-item.radio .opt-check { border-radius: 50%; }
+  .opt-item.selected .opt-check {
+    background: var(--blue); border-color: var(--blue);
+  }
+  .opt-item.selected .opt-check::after {
+    content: '';
+    width: 6px; height: 6px;
+    background: white; border-radius: 50%;
+  }
+  .opt-item.selected.checkbox .opt-check::after {
+    content: '✓'; font-size: 10px; font-weight: 700; color: white; border-radius: 0;
+    font-weight: 700; line-height: 1;
+  }
+
+  /* ── SCALE ── */
+  .scale-wrap { display: flex; flex-direction: column; gap: 6px; }
+  .scale-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+  .scale-btn {
+    width: 46px; height: 46px;
+    background: var(--gray-100); border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-md); cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px; font-weight: 500; color: var(--gray-600);
+    transition: all 0.15s; display: flex; align-items: center; justify-content: center;
+  }
+  .scale-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .scale-btn.active {
+    background: var(--blue); border-color: var(--blue);
+    color: white; font-weight: 600;
+  }
+  .scale-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--gray-400); }
+
+  /* ── MATRIX ── */
+  .matrix-wrap { overflow-x: auto; }
+  .matrix-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+  .matrix-table th {
+    padding: 10px 8px; text-align: center; font-weight: 500;
+    color: var(--gray-600); border-bottom: 1.5px solid var(--gray-200);
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+    background: var(--blue-pale);
+  }
+  .matrix-table th:first-child { text-align: left; padding-left: 12px; min-width: 200px; }
+  .matrix-table td {
+    padding: 10px 8px; text-align: center;
+    border-bottom: 1px solid var(--gray-100); color: var(--gray-800);
+  }
+  .matrix-table td:first-child { text-align: left; padding-left: 12px; font-size: 13px; }
+  .matrix-table tr:last-child td { border-bottom: none; }
+  .matrix-table tr:hover td { background: var(--blue-pale); }
+  .matrix-table input[type="radio"] {
+    width: 16px; height: 16px; accent-color: var(--blue); cursor: pointer;
+  }
+
+  /* ── SEPARATOR ── */
+  .sep { border: none; border-top: 1px solid var(--gray-200); margin: 24px 0; }
+
+  /* ── SUBMIT SECTION ── */
+  .submit-section {
+    background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 50%, var(--violet) 100%);
+    border-radius: var(--radius-xl);
+    padding: 36px 28px;
+    text-align: center;
+  }
+  .submit-section h3 {
+    font-family: 'Nunito', sans-serif; font-weight: 700;
+    font-size: 22px; color: var(--white); font-weight: 400; margin-bottom: 8px;
+  }
+  .submit-section p { font-size: 14px; color: rgba(255,255,255,0.55); margin-bottom: 24px; }
+
+  .btn-submit {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white; color: var(--blue);
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px; font-weight: 600;
+    padding: 14px 36px; border: none; border-radius: var(--radius-lg);
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.01em;
+  }
+  .btn-submit:hover { background: var(--blue-pale); transform: translateY(-1px); }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit svg { width: 18px; height: 18px; }
+
+  /* ── SUCCESS SCREEN ── */
+  #success-screen {
+    display: none;
+    position: fixed; inset: 0; z-index: 999;
+    background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue) 60%, var(--violet) 100%);
+    flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 24px;
+    animation: fadeIn 0.4s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  #success-screen.show { display: flex; }
+  .success-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.5);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 24px;
+  }
+  .success-icon svg { width: 32px; height: 32px; color: white; }
+  #success-screen h2 {
+    font-family: 'Nunito', sans-serif; font-weight: 700;
+    font-size: 28px; color: var(--white); font-weight: 400; margin-bottom: 12px;
+  }
+  #success-screen p { font-size: 15px; color: rgba(255,255,255,0.6); max-width: 420px; line-height: 1.7; margin-bottom: 28px; }
+  .btn-new {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: rgba(255,255,255,0.55);
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px; font-weight: 400;
+    padding: 10px 20px; border: 1px solid rgba(255,255,255,0.2); border-radius: var(--radius-lg);
+    cursor: pointer; transition: all 0.2s; margin-top: 12px;
+  }
+  .btn-new:hover { color: white; border-color: rgba(255,255,255,0.5); }
+
+  /* ── OTHER INPUT ── */
+  .other-input { margin-top: 8px; }
+  .other-input input { font-size: 13px; }
+
+  @media (max-width: 540px) {
+    .section-body { padding: 20px 16px; }
+    .hero { padding: 44px 16px 40px; }
+    .main { padding: 24px 12px 60px; }
+    .scale-btns { gap: 4px; }
+    .scale-btn { width: 40px; height: 40px; font-size: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo">
+      <img src="data:image/png;base64,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" alt="Loginfo" style="height:28px;width:auto;display:block;filter:brightness(0) invert(1);" />
+    </div>
+    <div class="progress-bar-wrap">
+      <span class="progress-label" id="progress-label">0% completo</span>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Pesquisa de Discovery · 2026</div>
+  <h1>Construindo o <em>LogView</em><br>com quem mais entende do negócio</h1>
+  <p>Suas respostas vão guiar o desenvolvimento da nossa plataforma de relatórios personalizados. Não há respostas certas — queremos entender como você opera hoje.</p>
+  <div class="hero-meta">
+    <span><span class="dot"></span> 15–20 minutos</span>
+    <span><span class="dot"></span> 8 seções · 35 perguntas</span>
+    <span><span class="dot"></span> Respostas confidenciais</span>
+  </div>
+</div>
+
+<!-- MAIN FORM -->
+<main class="main">
+<form id="survey-form" novalidate>
+
+<!-- ─── SEÇÃO 1 ─── -->
+<div class="section-card">
+  <div class="section-head">
+    <div class="section-num">1</div>
+    <div class="section-info">
+      <h2>Identificação e perfil</h2>
+      <p>Quem você é e onde atua</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="question">
+      <label class="q-label" for="nome">Nome completo <span style="color:var(--blue)">*</span></label>
+      <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required />
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="email">E-mail profissional <span style="color:var(--blue)">*</span></label>
+      <input type="email" id="email" name="email" placeholder="nome@empresa.com.br" required />
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="empresa">Empresa e tipo de recinto <span style="color:var(--blue)">*</span></label>
+      <div class="q-hint">Ex.: Terminal Portuário XYZ — Porto Organizado</div>
+      <input type="text" id="empresa" name="empresa" placeholder="Nome da empresa · tipo de recinto" required />
+    </div>
+
+    <div class="question">
+      <label class="q-label">Qual é o seu setor / área?</label>
+      <div class="opts-grid col-3" id="setor-opts"></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Qual é o seu cargo / função?</label>
+      <div class="opts-grid col-3" id="cargo-opts"></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Tipo de recinto que sua empresa opera</label>
+      <div class="opts-grid col-3" id="recinto-opts"></div>
+      <div class="other-input" id="recinto-outro-wrap" style="display:none;">
+        <input type="text" id="recinto_outro" name="recinto_outro" placeholder="Descreva o tipo de recinto..." />
+        <span style="font-size:11px;color:var(--blue);margin-top:4px;display:block;">* Obrigatório ao selecionar "Outro"</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── SEÇÃO 2 ─── -->
+<div class="section-card">
+  <div class="section-head">
+    <div class="section-num">2</div>
+    <div class="section-info">
+      <h2>Uso atual de relatórios</h2>
+      <p>Como você trabalha com dados hoje</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="question">
+      <label class="q-label">Com que frequência você usa relatórios no trabalho?</label>
+      <div class="opts-grid col-3" id="freq-opts"></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Para quais finalidades você usa relatórios? <span style="font-weight:400;color:var(--gray-400)">(todas que se aplicam)</span></label>
+      <div class="opts-grid col-2" id="finalidade-opts"></div>
+      <div class="other-input"><input type="text" id="finalidade_outro" name="finalidade_outro" placeholder="Outra finalidade..." /></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Quais ferramentas você usa para gerar ou analisar dados? <span style="font-weight:400;color:var(--gray-400)">(todas que se aplicam)</span></label>
+      <div class="opts-grid col-2" id="ferramentas-opts"></div>
+      <div class="other-input"><input type="text" id="ferramentas_outro" name="ferramentas_outro" placeholder="Outra ferramenta..." /></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Por que usa ferramentas externas além do sistema? <span style="font-weight:400;color:var(--gray-400)">(todas que se aplicam)</span></label>
+      <div class="opts-grid col-2" id="motivo_externo-opts"></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="processo_manual">Qual o maior "trabalho manual" que você faz hoje envolvendo dados do sistema?</label>
+      <div class="q-hint">Ex.: exporto relatório toda segunda, colo em planilha, calculo manualmente e envio por e-mail para o gerente.</div>
+      <textarea id="processo_manual" name="processo_manual" placeholder="Descreva o processo atual..."></textarea>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── SEÇÃO 3 ─── -->
+<div class="section-card">
+  <div class="section-head">
+    <div class="section-num">3</div>
+    <div class="section-info">
+      <h2>Dores e dificuldades</h2>
+      <p>O que trava o seu trabalho hoje</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="question">
+      <label class="q-label">Maiores dificuldades com relatórios hoje <span style="font-weight:400;color:var(--gray-400)">(selecione até 3)</span></label>
+      <div class="opts-grid col-2" id="dificuldades-opts"></div>
+      <div class="other-input"><input type="text" id="dificuldade_outro" name="dificuldade_outro" placeholder="Outra dificuldade..." /></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="decisao_perdida">Já deixou de tomar uma decisão importante por falta de dados no momento certo?</label>
+      <textarea id="decisao_perdida" name="decisao_perdida" placeholder="Descreva o que aconteceu..."></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Quanto tempo por semana você gasta com relatórios manuais?</label>
+      <div class="opts-grid col-3" id="tempo-opts"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── SEÇÃO 4 ─── -->
+<div class="section-card">
+  <div class="section-head">
+    <div class="section-num">4</div>
+    <div class="section-info">
+      <h2>Dados e métricas relevantes</h2>
+      <p>O que importa para o seu negócio</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="question">
+      <label class="q-label">Quais métricas são mais importantes para o seu trabalho? <span style="font-weight:400;color:var(--gray-400)">(todas que se aplicam)</span></label>
+      <div class="opts-grid col-2" id="metricas-opts"></div>
+      <div class="other-input"><input type="text" id="metrica_outro" name="metrica_outro" placeholder="Outra métrica..." /></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="dados_inacessiveis">Existe alguma informação que sabe que está no sistema mas não consegue acessar facilmente?</label>
+      <textarea id="dados_inacessiveis" name="dados_inacessiveis" placeholder="Descreva os dados que você busca mas tem dificuldade de encontrar..."></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="relatorio_ideal">Se pudesse criar o relatório ideal para o seu trabalho, como ele seria?</label>
+      <div class="q-hint">Pense em campos, período, visualização, para quem você mostraria.</div>
+      <textarea id="relatorio_ideal" name="relatorio_ideal" placeholder="Descreva o relatório ideal..."></textarea>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── SEÇÃO 5 ─── -->
+<div class="section-card">
+  <div class="section-head">
+    <div class="section-num">5</div>
+    <div class="section-info">
+      <h2>Maturidade e perfil de uso</h2>
+      <p>Sua experiência com ferramentas de dados</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="question">
+      <label class="q-label">Como você se descreveria em relação ao uso de ferramentas de dados?</label>
+      <div class="opts-grid" style="grid-template-columns:1fr" id="maturidade-opts"></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Disposição para aprender uma ferramenta nova em troca de mais liberdade de criação</label>
+      <div class="scale-wrap">
+        <div class="scale-btns" id="scale-aprender"></div>
+        <div class="scale-labels"><span>Não estou disposto</span><span>Totalmente disposto</span></div>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Quem costuma solicitar relatórios para você? <span style="font-weight:400;color:var(--gray-400)">(todas que se aplicam)</span></label>
+      <div class="opts-grid col-2" id="solicitantes-opts"></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Com que frequência compartilha relatórios com pessoas fora da sua equipe?</label>
+      <div class="opts-grid col-3" id="compartilhamento-opts"></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Como prefere visualizar informações? <span style="font-weight:400;color:var(--gray-400)">(todas que se aplicam)</span></label>
+      <div class="opts-grid col-2" id="visualizacao-opts"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── SEÇÃO 6 ─── -->
+<div class="section-card">
+  <div class="section-head">
+    <div class="section-num">6</div>
+    <div class="section-info">
+      <h2>Expectativas e funcionalidades</h2>
+      <p>O que tornaria a ferramenta indispensável</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="question">
+      <label class="q-label">O que faria você usar uma ferramenta de relatórios com frequência? <span style="font-weight:400;color:var(--gray-400)">(escolha as 3 mais importantes)</span></label>
+      <div class="opts-grid col-2" id="drivers-opts"></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Avalie a importância de cada funcionalidade</label>
+      <div class="matrix-wrap">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Funcionalidade</th>
+              <th>Irrelevante</th>
+              <th>Pouco importante</th>
+              <th>Importante</th>
+              <th>Muito importante</th>
+              <th>Essencial</th>
+            </tr>
+          </thead>
+          <tbody id="matrix-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="funcionalidade_externa">O que ferramentas externas (Power BI, Excel, etc.) oferecem que você gostaria dentro do sistema?</label>
+      <textarea id="funcionalidade_externa" name="funcionalidade_externa" placeholder="Descreva a funcionalidade ou recurso..."></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="primeiro_relatorio">Se a ferramenta estivesse disponível hoje, qual seria o primeiro relatório que você criaria?</label>
+      <textarea id="primeiro_relatorio" name="primeiro_relatorio" placeholder="Descreva o relatório..."></textarea>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── SEÇÃO 7 ─── -->
+<div class="section-card">
+  <div class="section-head">
+    <div class="section-num">7</div>
+    <div class="section-info">
+      <h2>Oportunidades de negócio</h2>
+      <p>O impacto além das dores</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="question">
+      <label class="q-label" for="impacto_dados">Acesso facilitado a dados poderia mudar algum processo ou decisão no seu negócio? Como?</label>
+      <div class="q-hint">Pense em processos manuais, demorados ou que dependem de terceiros para obter informação.</div>
+      <textarea id="impacto_dados" name="impacto_dados" placeholder="Descreva o impacto potencial..."></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="oportunidade_perdida">Já perdeu um cliente ou oportunidade por não conseguir apresentar dados de forma rápida e clara?</label>
+      <textarea id="oportunidade_perdida" name="oportunidade_perdida" placeholder="Relate brevemente o episódio..."></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="demanda_clientes">Seus clientes (importadores, exportadores, agentes) pedem informações que você tem dificuldade de fornecer? Quais?</label>
+      <textarea id="demanda_clientes" name="demanda_clientes" placeholder="Quais informações seus clientes mais pedem?"></textarea>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Oferecer um portal de dados para seus clientes seria um diferencial competitivo?</label>
+      <div class="opts-grid col-2" id="diferencial-opts"></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="desafios_setor">Quais os 3 maiores desafios do seu setor que poderiam ser mitigados com melhor acesso a dados?</label>
+      <textarea id="desafios_setor" name="desafios_setor" placeholder="Liste os desafios..."></textarea>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── SEÇÃO 8 ─── -->
+<div class="section-card">
+  <div class="section-head">
+    <div class="section-num">8</div>
+    <div class="section-info">
+      <h2>Considerações finais</h2>
+      <p>Satisfação atual e próximos passos</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="question">
+      <label class="q-label">Satisfação geral com os relatórios disponíveis hoje no sistema</label>
+      <div class="scale-wrap">
+        <div class="scale-btns" id="scale-satisfacao"></div>
+        <div class="scale-labels"><span>Muito insatisfeito</span><span>Muito satisfeito</span></div>
+      </div>
+    </div>
+
+    <div class="question">
+      <label class="q-label">Participaria de uma sessão de 30 min para nos mostrar como trabalha com dados hoje?</label>
+      <div class="opts-grid col-3" id="sessao-opts"></div>
+    </div>
+
+    <div class="question">
+      <label class="q-label" for="comentarios">Comentários adicionais — algo mais que gostaria de compartilhar?</label>
+      <textarea id="comentarios" name="comentarios" placeholder="Comentários livres..."></textarea>
+    </div>
+
+  </div>
+</div>
+
+<!-- ─── SUBMIT ─── -->
+<div class="submit-section">
+  <h3>Obrigado pela sua participação</h3>
+
+  <button type="submit" class="btn-submit">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3v10M5 8l5 5 5-5"/><path d="M3 17h14"/></svg>
+    Enviar respostas
+  </button>
+</div>
+
+</form>
+</main>
+
+<!-- SUCCESS SCREEN -->
+<div id="success-screen">
+  <div class="success-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M20 6L9 17l-5-5"/>
+    </svg>
+  </div>
+  <h2>Resposta registrada!</h2>
+  <p>Seus dados foram enviados com sucesso para a planilha central. Obrigado pela sua contribuição — ela vai fazer diferença no produto.</p>
+  <button class="btn-new" onclick="location.reload()">Registrar outra resposta</button>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// DATA DEFINITIONS
+// ─────────────────────────────────────────────
+const OPTIONS = {
+  setor: ['Operações / Logística','Comercial / Atendimento','Financeiro / Controladoria',
+    'Compliance / Jurídico','TI / Sistemas','Diretoria / Gestão','Recebimento / Armazenagem','Desembaraço Aduaneiro'],
+  cargo: ['Analista / Técnico','Coordenador / Supervisor','Gerente','Diretor / C-level'],
+  recinto: ['Porto Organizado','Terminal Portuário Privado','Aeroporto','CLIA','REDEX','Armazém Geral','Recinto Especial','Outro'],
+  freq: ['Várias vezes ao dia','Diariamente','Semanalmente','Mensalmente','Esporadicamente'],
+  finalidade: ['Acompanhamento operacional do dia a dia','Tomada de decisão gerencial',
+    'Atendimento a clientes / importadores','Prestação de contas à diretoria',
+    'Auditorias internas e compliance','Exigências da Receita Federal / Siscomex',
+    'Controle de prazos e SLA','Faturamento e conciliação financeira',
+    'Análise de desempenho de processos','Planejamento e capacidade'],
+  ferramentas: ['Relatórios do nosso sistema','Excel / Google Sheets','Power BI',
+    'Looker / Looker Studio','Tableau','Exportação manual para PDF',
+    'SQL direto no banco de dados','Python / scripts próprios'],
+  motivo_externo: ['O relatório que preciso não existe no sistema','Preciso cruzar dados de fontes diferentes',
+    'O relatório existe mas não é customizável','Prefiro trabalhar com planilhas',
+    'Preciso de gráficos e visualizações','A extração de dados é lenta ou difícil',
+    'Preciso compartilhar com pessoas sem acesso ao sistema','Uso apenas o sistema — não uso outras ferramentas'],
+  dificuldades: ['Dados desatualizados ou não confiáveis','Relatório não mostra o que preciso',
+    'Demora para extrair / gerar o relatório','Preciso pedir ao TI para criar relatórios',
+    'Não consigo filtrar ou segmentar facilmente','Dificuldade de compartilhar resultados',
+    'Dados de sistemas diferentes não se comunicam','Relatórios existem mas são difíceis de interpretar',
+    'Falta de histórico para análise de tendência','Falta de gráficos e visualizações'],
+  tempo: ['Menos de 1 hora','1 a 3 horas','3 a 6 horas','Mais de 6 horas'],
+  metricas: ['Volume de processos (DI, DTA, CE, BL...)','Tempo médio de desembaraço / permanência de carga',
+    'Ocupação de armazém / estoque','Prazos e vencimentos (SDA, sobreestadia...)',
+    'Faturamento e receita por cliente ou processo','Produtividade da equipe operacional',
+    'Divergências e ocorrências','Canal de parametrização (verde, amarelo, vermelho, cinza)',
+    'Tipo de carga / NCM / Incoterm','Desempenho por despachante / agente',
+    'Demanda de entrada e saída de cargas','Indicadores fiscais e aduaneiros'],
+  maturidade: [
+    'Iniciante — prefiro relatórios prontos e simples, sem precisar configurar nada',
+    'Intermediário — consigo filtrar e organizar dados, mas não faço análises complexas',
+    'Avançado — uso Excel/BI com desenvoltura, crio fórmulas e gráficos',
+    'Especialista — trabalho com SQL, scripts ou ferramentas de análise avançada'],
+  solicitantes: ['Eu mesmo — uso para meu próprio trabalho','Meu gestor direto','Diretoria / CEO',
+    'Clientes externos (importadores, exportadores)','Equipe de auditoria / compliance','Receita Federal / órgão regulador'],
+  compartilhamento: ['Diariamente','Semanalmente','Mensalmente','Raramente','Nunca'],
+  visualizacao: ['Tabelas e listas detalhadas','Gráficos de barras e linhas',
+    'Indicadores resumidos (KPIs / cards)','Mapas e visualizações geográficas',
+    'Cronogramas e timelines','Dashboard com tudo integrado'],
+  drivers: ['Ser fácil e intuitiva, sem treinamento','Ter templates prontos para adaptar',
+    'Atualização automática em tempo real','Agendamento e envio automático por e-mail',
+    'Exportação para Excel, PDF, CSV','Compartilhamento com clientes sem acesso ao sistema',
+    'Alertas automáticos por indicadores','Salvar relatórios favoritos',
+    'Controle de permissões por usuário','Integração com outras ferramentas'],
+  diferencial: ['Sim, com certeza seria um diferencial','Provavelmente sim',
+    'Talvez — dependeria de como funciona','Não acho que faria diferença'],
+  sessao: ['Sim, tenho interesse','Talvez — depende da disponibilidade','Prefiro não participar'],
+};
+
+const MATRIX_ITEMS = [
+  'Criação de relatórios sem suporte técnico',
+  'Templates e modelos pré-prontos por tipo de operação',
+  'Filtros avançados por período, cliente, tipo de carga, regime',
+  'Gráficos e dashboards visuais interativos',
+  'Agendamento e envio automático por e-mail',
+  'Exportação para Excel, PDF, CSV',
+  'Alertas quando indicadores são atingidos',
+  'Portal de acesso para clientes externos',
+  'Controle de quem pode ver cada relatório',
+  'Histórico e comparação entre períodos',
+];
+
+const RADIO_FIELDS = ['setor','cargo','freq','maturidade','tempo','compartilhamento','diferencial','sessao'];
+const CHECKBOX_FIELDS = ['recinto','finalidade','ferramentas','motivo_externo','dificuldades','metricas','solicitantes','visualizacao','drivers'];
+
+// ─────────────────────────────────────────────
+// RENDER OPTIONS
+// ─────────────────────────────────────────────
+function renderOpts(containerId, fieldName, type) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  OPTIONS[fieldName].forEach((label, i) => {
+    const item = document.createElement('label');
+    item.className = `opt-item ${type}`;
+    item.innerHTML = `<input type="${type}" name="${fieldName}" value="${label}" />
+      <span class="opt-check"></span><span>${label}</span>`;
+    item.querySelector('input').addEventListener('change', () => updateOptState(item, type, fieldName));
+    item.addEventListener('click', () => {
+      setTimeout(() => updateOptState(item, type, fieldName), 10);
+    });
+    container.appendChild(item);
+  });
+}
+
+function updateOptState(item, type, fieldName) {
+  const inp = item.querySelector('input');
+  if (type === 'radio') {
+    document.querySelectorAll(`[name="${fieldName}"]`).forEach(i => {
+      i.closest('.opt-item').classList.remove('selected');
+    });
+  }
+  item.classList.toggle('selected', inp.checked);
+  updateProgress();
+}
+
+// ─────────────────────────────────────────────
+// RENDER SCALE
+// ─────────────────────────────────────────────
+function renderScale(containerId, name, count) {
+  const el = document.getElementById(containerId);
+  for (let i = 1; i <= count; i++) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'scale-btn';
+    btn.textContent = i;
+    btn.dataset.name = name;
+    btn.dataset.value = i;
+    btn.addEventListener('click', () => {
+      el.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      updateProgress();
+    });
+    el.appendChild(btn);
+  }
+}
+
+// ─────────────────────────────────────────────
+// RENDER MATRIX
+// ─────────────────────────────────────────────
+function renderMatrix() {
+  const tbody = document.getElementById('matrix-body');
+  MATRIX_ITEMS.forEach((item, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${item}</td>` + [1,2,3,4,5].map(v =>
+      `<td><input type="radio" name="mat_${i}" value="${v}" /></td>`
+    ).join('');
+    tr.querySelectorAll('input').forEach(inp => inp.addEventListener('change', updateProgress));
+    tbody.appendChild(tr);
+  });
+}
+
+// ─────────────────────────────────────────────
+// PROGRESS
+// ─────────────────────────────────────────────
+function updateProgress() {
+  const total = document.querySelectorAll('.section-card').length;
+  let filled = 0;
+  document.querySelectorAll('.section-card').forEach(card => {
+    const hasText = [...card.querySelectorAll('input[type=text]:not([id$=_outro]), input[type=email], textarea')]
+      .some(el => el.value.trim().length > 0);
+    const hasCheck = [...card.querySelectorAll('input[type=checkbox], input[type=radio]')]
+      .some(el => el.checked);
+    const hasScale = [...card.querySelectorAll('.scale-btn.active')].length > 0;
+    if (hasText || hasCheck || hasScale) filled++;
+  });
+  const pct = Math.round((filled / total) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct + '% completo';
+}
+
+// ─────────────────────────────────────────────
+// COLLECT DATA
+// ─────────────────────────────────────────────
+function collectData() {
+  const data = { data_envio: new Date().toLocaleString('pt-BR') };
+
+  // Text fields
+  ['nome','email','empresa','finalidade_outro','ferramentas_outro',
+   'dificuldade_outro','metrica_outro','recinto_outro','processo_manual','decisao_perdida',
+   'dados_inacessiveis','relatorio_ideal','funcionalidade_externa','primeiro_relatorio',
+   'impacto_dados','oportunidade_perdida','demanda_clientes','desafios_setor','comentarios'
+  ].forEach(id => { data[id] = (document.getElementById(id)?.value || '').trim(); });
+
+  // Radio fields
+  RADIO_FIELDS.forEach(field => {
+    const checked = document.querySelector(`input[name="${field}"]:checked`);
+    data[field] = checked ? checked.value : '';
+  });
+
+  // Checkbox fields
+  CHECKBOX_FIELDS.forEach(field => {
+    const checked = [...document.querySelectorAll(`input[name="${field}"]:checked`)].map(i => i.value);
+    data[field] = checked.join(' | ');
+  });
+
+  // Scales
+  const scaleAprender = document.querySelector('#scale-aprender .scale-btn.active');
+  data['escala_aprender_ferramenta'] = scaleAprender ? scaleAprender.dataset.value : '';
+  const scaleSat = document.querySelector('#scale-satisfacao .scale-btn.active');
+  data['escala_satisfacao_atual'] = scaleSat ? scaleSat.dataset.value : '';
+
+  // Matrix
+  MATRIX_ITEMS.forEach((item, i) => {
+    const checked = document.querySelector(`input[name="mat_${i}"]:checked`);
+    const key = 'func_' + item.substring(0, 40).replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+    data[key] = checked ? checked.value : '';
+  });
+
+  return data;
+}
+
+// ─────────────────────────────────────────────
+// CONFIGURAÇÃO GOOGLE SHEETS
+// Cole aqui a URL do seu Google Apps Script após o deploy
+// ─────────────────────────────────────────────
+const SCRIPT_URL = 'COLE_AQUI_A_URL_DO_SEU_APPS_SCRIPT';
+
+// ─────────────────────────────────────────────
+// ENVIAR PARA GOOGLE SHEETS
+// ─────────────────────────────────────────────
+async function sendToSheets(data) {
+  // Remapeia matriz para func_0..func_9
+  const payload = Object.assign({}, data);
+  const matrixKeys = Object.keys(data).filter(k => k.startsWith('func_') && !k.startsWith('func_0') && !isNaN(k.split('func_')[1].charAt(0)));
+  
+  // Garante mapeamento numérico para o Apps Script
+  MATRIX_ITEMS.forEach((item, i) => {
+    const oldKey = 'func_' + item.substring(0, 40).replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+    if (data[oldKey] !== undefined) {
+      payload['func_' + i] = data[oldKey];
+      delete payload[oldKey];
+    }
+  });
+
+  const response = await fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  // no-cors retorna resposta opaca — assumimos sucesso se não lançar
+  return true;
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+function init() {
+  renderOpts('setor-opts', 'setor', 'radio');
+  renderOpts('cargo-opts', 'cargo', 'radio');
+  renderOpts('recinto-opts', 'recinto', 'checkbox');
+  renderOpts('freq-opts', 'freq', 'radio');
+  renderOpts('finalidade-opts', 'finalidade', 'checkbox');
+  renderOpts('ferramentas-opts', 'ferramentas', 'checkbox');
+  renderOpts('motivo_externo-opts', 'motivo_externo', 'checkbox');
+  renderOpts('dificuldades-opts', 'dificuldades', 'checkbox');
+  renderOpts('tempo-opts', 'tempo', 'radio');
+  renderOpts('metricas-opts', 'metricas', 'checkbox');
+  renderOpts('maturidade-opts', 'maturidade', 'radio');
+  renderOpts('solicitantes-opts', 'solicitantes', 'checkbox');
+  renderOpts('compartilhamento-opts', 'compartilhamento', 'radio');
+  renderOpts('visualizacao-opts', 'visualizacao', 'checkbox');
+  renderOpts('drivers-opts', 'drivers', 'checkbox');
+  renderOpts('diferencial-opts', 'diferencial', 'radio');
+  renderOpts('sessao-opts', 'sessao', 'radio');
+  renderScale('scale-aprender', 'escala_aprender', 5);
+  renderScale('scale-satisfacao', 'escala_satisfacao', 5);
+  renderMatrix();
+
+  document.querySelectorAll('input, textarea').forEach(el => {
+    el.addEventListener('input', updateProgress);
+  });
+
+  // ── Lógica "Outro" no recinto ──
+  document.getElementById('recinto-opts').addEventListener('change', e => {
+    const outroCb = document.querySelector('input[name="recinto"][value="Outro"]');
+    const wrap = document.getElementById('recinto-outro-wrap');
+    const input = document.getElementById('recinto_outro');
+    if (outroCb && outroCb.checked) {
+      wrap.style.display = 'block';
+      input.required = true;
+    } else {
+      wrap.style.display = 'none';
+      input.required = false;
+      input.value = '';
+    }
+  });
+
+  document.getElementById('survey-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const nome    = document.getElementById('nome').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const empresa = document.getElementById('empresa').value.trim();
+
+    if (!nome || !email || !empresa) {
+      alert('Por favor, preencha pelo menos: Nome, E-mail e Empresa.');
+      return;
+    }
+
+    if (!SCRIPT_URL || SCRIPT_URL === 'COLE_AQUI_A_URL_DO_SEU_APPS_SCRIPT') {
+      alert('⚠️ Configure a URL do Google Apps Script no arquivo HTML antes de usar.\n\nConsulte as instruções no arquivo google_apps_script.js');
+      return;
+    }
+
+    // UI: loading
+    const btn = document.querySelector('.btn-submit');
+    btn.disabled = true;
+    btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Enviando...`;
+
+    try {
+      const data = collectData();
+      await sendToSheets(data);
+
+      document.getElementById('progress-fill').style.width = '100%';
+      document.getElementById('progress-label').textContent = 'Enviado!';
+      document.getElementById('success-screen').classList.add('show');
+
+    } catch (err) {
+      btn.disabled = false;
+      btn.innerHTML = `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3v10M5 8l5 5 5-5"/><path d="M3 17h14"/></svg> Enviar respostas`;
+      alert('Erro ao enviar. Verifique sua conexão e tente novamente.\n\nDetalhe: ' + err.message);
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
